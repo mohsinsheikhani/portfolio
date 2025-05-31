@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mohsin Sheikhani</title>
+    <meta
+      name="description"
+      content="Mohsin builds cloud for scale. A Cloud Architect & Engineer, he helped startups across the U.S. and EU modernize legacy stacks into secure, event-driven systems. (Think serverless, ECS, and lots of Terraform.) He started in software development, but now his world is all about designing AWS-native architectures; multi-region, cost-aware, and always secure. He enforces least privilege like a mantra and adds intelligence to the cloud with GenAI via Bedrock and SageMaker. If you ask about VPC design or permission boundaries, prepare for a deep dive!"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+
+        --color-background: #ffffff; /* White */
+        --color-muted: #f3f4f5; /* Light Gray 200 */
+        --color-primary: #191e23; /* Dark Gray 900 */
+        --color-secondary: #6c7781; /* Dark Gray 300 */
+        --color-accent: #ffb900; /* Accent Yellow */
+        --color-link: #46b450; /* Accent Green */
+
+        --scale-ratio: 1.25;
+        --scale0: 1rem;
+        --scale1: calc(var(--scale0) * var(--scale-ratio));
+        --scale2: calc(var(--scale1) * var(--scale-ratio));
+        --scale3: calc(var(--scale2) * var(--scale-ratio));
+        --scale4: calc(var(--scale3) * var(--scale-ratio));
+        --scale5: calc(var(--scale4) * var(--scale-ratio));
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --color-background: #191e23; /* Dark Gray 900 */
+          --color-muted: #23282d; /* Dark Gray 800 */
+          --color-primary: #fbfbfc; /* Light Gray 100 */
+          --color-secondary: #ccd0d4; /* Light Gray 700 */
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        font-size: 14px;
+      }
+
+      body {
+        background: var(--color-background);
+        color: var(--color-primary);
+        display: grid;
+        font: 1em/1.5 Lato, sans-serif;
+        gap: 2em;
+        grid-template-columns:
+          [full-start]
+          1fr
+          [main-start side-start]
+          minmax(min-content, 12em)
+          [side-end content-start]
+          minmax(min-content, 36em)
+          [main-end content-end]
+          1fr
+          [full-end];
+        grid-template-rows: auto [content] 0;
+        margin-bottom: 4em;
+      }
+
+      body::before {
+        content: "";
+        grid-column: full;
+        grid-row: content;
+      }
+
+      ol,
+      ul {
+        padding-left: 1em;
+      }
+
+      :not(.icon-list, .tag-list) > li + li {
+        margin-top: 0.4em;
+      }
+
+      li::marker,
+      .network {
+        color: var(--color-secondary);
+      }
+
+      a {
+        color: var(--color-link);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      a:focus,
+      a:hover {
+        color: var(--color-accent);
+      }
+
+      a:visited {
+        color: var(--color-link);
+      }
+
+      h1,
+      h2,
+      h3,
+      h5 {
+        font-weight: normal;
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+      }
+
+      h1 {
+        font-size: var(--scale5);
+      }
+
+      h2 {
+        color: var(--color-secondary);
+        font-size: var(--scale4);
+      }
+
+      h3 {
+        color: var(--color-accent);
+        font-size: var(--scale3);
+        grid-column: side;
+        margin-bottom: 1rem;
+      }
+
+      h4 {
+        font-size: var(--scale2);
+      }
+
+      h5 {
+        font-size: var(--scale1);
+      }
+
+      h6 {
+        font-size: var(--scale0);
+      }
+
+      blockquote {
+        border-left: 0.2em solid var(--color-muted);
+        padding-left: 1em;
+      }
+
+      cite {
+        color: var(--color-secondary);
+        font-style: inherit;
+      }
+
+      cite::before {
+        content: "— ";
+      }
+
+      svg {
+        margin-right: 0.2em;
+        vertical-align: -0.2em;
+      }
+
+      .masthead {
+        background: var(--color-muted);
+        display: inherit;
+        gap: inherit;
+        grid-column: full;
+        grid-template-columns: inherit;
+        padding: 4em 0;
+        text-align: center;
+      }
+
+      .masthead > *,
+      section {
+        grid-column: main;
+      }
+
+      .masthead > img {
+        border-radius: 50%;
+        margin: 0 auto;
+        max-width: 12em;
+      }
+
+      .company {
+        color: var(--color-link);
+      }
+
+      article > * + *,
+      blockquote > * + * {
+        margin-top: 0.6em;
+      }
+
+      .meta {
+        color: var(--color-secondary);
+      }
+
+      .stack {
+        display: grid;
+        gap: 1.5em;
+      }
+
+      .icon-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4em 1em;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+      }
+
+      .grid-list {
+        display: grid;
+        gap: 1em;
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4em;
+        list-style: none;
+        padding: 0;
+      }
+
+      .tag-list > li {
+        background: var(--color-muted);
+        border-radius: 0.2em;
+        padding: 0.2em 0.6em;
+      }
+
+      .bullet-item:not(:first-child)::before {
+        content: "· ";
+        margin: 0 0.2em;
+      }
+
+      @media print, (min-width: 48em) {
+        h3 {
+          text-align: right;
+          margin-bottom: inherit;
+        }
+
+        .masthead {
+          text-align: inherit;
+        }
+
+        .masthead > *,
+        section {
+          grid-column: content;
+        }
+
+        .masthead img {
+          grid-column: side;
+          grid-row: span 2;
+          max-width: 100%;
+        }
+
+        section {
+          display: contents;
+        }
+
+        .icon-list {
+          flex-direction: column;
+        }
+
+        .grid-list {
+          grid-template-columns: repeat(
+            auto-fit,
+            minmax(calc((100% - 1em) / 2), 1fr)
+          );
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="masthead">
+      <img src="" alt="" />
+      <div>
+        <h1>Mohsin Sheikhani</h1>
+        <h2>Cloud Architect & Engineer</h2>
+      </div>
+      <article>
+        <p>
+          Cloud Architect & Engineer with proven experience designing secure,
+          scalable AWS infrastructure for startups in the U.S. and EU. Skilled
+          in Infrastructure as Code, containerized (ECS) and serverless
+          workloads, focused on embedding cloud security best practices from the
+          ground up, cost efficiency, and event-driven systems. Currently
+          integrating AWS Bedrock agentic AI to build smarter, adaptive cloud
+          solutions.
+        </p>
+      </article>
+      <ul class="icon-list">
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-map-pin"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          Karachi, Pakistan
+        </li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-mail"
+          >
+            <path
+              d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+            ></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+          <a href="mailto:imohsinsheikhani@gmail.com"
+            >imohsinsheikhani@gmail.com</a
+          >
+        </li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-phone"
+          >
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+            ></path>
+          </svg>
+          <a href="tel:+92-3293033992">+92-3293033992</a>
+        </li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-linkedin"
+          >
+            <path
+              d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+            ></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+          <a href="https://www.linkedin.com/in/mohsin-sheikhani"
+            >Mohsin Sheikhani</a
+          >
+          <span class="network">(LinkedIn)</span>
+        </li>
+        <li>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-github"
+          >
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+            ></path>
+          </svg>
+          <a href="https://github.com/mohsinsheikhani">Mohsin Sheikhani</a>
+          <span class="network">(GitHub)</span>
+        </li>
+      </ul>
+    </header>
+
+    <section id="work">
+      <h3>Work</h3>
+      <div class="stack">
+        <article>
+          <header>
+            <h4>Cloud Engineer</h4>
+            <div class="meta">
+              <div>
+                <strong>
+                  <span class="company">McCarthy Tire</span>
+                </strong>
+                <span class="bullet-item"
+                  >5th largest independent commercial tire dealer in the
+                  US</span
+                >
+              </div>
+              <div>
+                <time datetime="2025-01-01">Jan 2025</time> –
+                <time datetime="present">Present</time>
+              </div>
+              <div>Wilkes-Barre, US (Remote)</div>
+            </div>
+          </header>
+          <p>
+            Led AWS cloud modernization for a U.S. enterprise, focusing on
+            secure multi-account design and IaC automation. Enabled real-time
+            analytics to support operations and reduce overhead.
+          </p>
+          <ul>
+            <li>
+              <p>
+                Set up a multi-account AWS Organization with AWS Identity Center
+                and over 5 custom Service Control Policies (SCPs) to enforce
+                security baselines, and governance at scale.
+              </p>
+            </li>
+            <li>
+              <p>
+                Established a secure Site-to-Site VPN to connect on-premises
+                infrastructure with AWS.
+              </p>
+            </li>
+
+            <li>
+              <p>
+                Built a real-time S3 data lake using AWS Glue and Amazon
+                QuickSight, reducing reporting latency by 60% and enabling
+                faster, data-driven decisions.
+              </p>
+            </li>
+
+            <li>
+              <p>
+                Automated Terraform-based deployments, reducing infrastructure
+                setup time by 40%
+              </p>
+            </li>
+            <li>
+              <p>
+                Enforced KMS encryption, IAM least privilege, and VPC Endpoints,
+                improving audit compliance
+              </p>
+            </li>
+          </ul>
+        </article>
+        <article>
+          <header>
+            <h4>Backend & AWS Infrastructure Engineer</h4>
+            <div class="meta">
+              <div>
+                <strong>
+                  <span class="company">SYDT OÜ</span>
+                </strong>
+                <span class="bullet-item">Modern Software Solutions</span>
+              </div>
+              <div>
+                <time datetime="2024-01-01">Jan 2024</time> –
+                <time datetime="2025-01-01">Jan 2025</time>
+              </div>
+              <div>Tallinn, Estonia (Remote)</div>
+            </div>
+          </header>
+          <p>
+            Improved AWS infrastructure for multiple SaaS teams with a focus on
+            automation, cost, and security. Delivered scalable, event-driven
+            systems aligned with AWS best practices.
+          </p>
+          <ul>
+            <li>
+              <p>
+                Spearheaded event-driven microservices using Lambda, EC2, RDS,
+                SQS, and EventBridge
+              </p>
+            </li>
+            <li>
+              <p>
+                Leveraged EventBridge rules for integrating data from different
+                sources, including Shopify subscriptions.
+              </p>
+            </li>
+            <li>
+              <p>
+                Created reusable Terraform modules, reducing manual
+                infrastructure provisioning by 80%
+              </p>
+            </li>
+            <li>
+              <p>
+                Conducted AWS Well-Architected reviews, cutting downtime by 40%
+                and increasing reliability by 25%
+              </p>
+            </li>
+            <li>
+              <p>
+                Reduced monthly cloud spend by 22% through EC2 right-sizing,
+                Auto Scaling, and lifecycle policies
+              </p>
+            </li>
+            <li>
+              <p>
+                Reduced operational costs by shutting down the development
+                environment every weekend.
+              </p>
+            </li>
+            <li>
+              <p>
+                Strengthened cloud security posture using KMS, IAM policies, and
+                AWS WAF, reducing incidents by 45%
+              </p>
+            </li>
+          </ul>
+        </article>
+        <article>
+          <header>
+            <h4>Cloud & Backend Engineer</h4>
+            <div class="meta">
+              <div>
+                <strong>
+                  <span class="company">GameMyBiz</span>
+                </strong>
+                <span class="bullet-item"
+                  >SaaS backend engineering and cloud infrastructure</span
+                >
+              </div>
+              <div>
+                <time datetime="2022-11-01">Nov 2022</time> –
+                <time datetime="2023-12-01">Dec 2023</time>
+              </div>
+              <div>Boise, US (Remote)</div>
+            </div>
+          </header>
+          <p>
+            Led backend engineering for a multi-tenant SaaS platform, focusing
+            on scalability, cost efficiency, and automation. Delivered
+            high-performance infrastructure using AWS services and CI/CD
+            pipelines for a multi-tenant SaaS platform.
+          </p>
+          <ul>
+            <li>
+              <p>
+                Built scalable SaaS platform on ECS Fargate with ALB, scaling to
+                7,000+ concurrent users
+              </p>
+            </li>
+            <li>
+              <p>
+                Automated CI/CD workflows using AWS CodePipeline, reducing
+                release cycles by 60%
+              </p>
+            </li>
+            <li>
+              <p>
+                Reduced S3 monthly cost by 32% using Intelligent-Tiering, based
+                on access trends identified via S3 Analytics
+              </p>
+            </li>
+          </ul>
+        </article>
+        <article>
+          <header>
+            <h4>Cloud & Backend Engineer</h4>
+            <div class="meta">
+              <div>
+                <strong>
+                  <span class="company">Zadpas Technologies</span>
+                </strong>
+                <span class="bullet-item">Software company</span>
+              </div>
+              <div>
+                <time datetime="2021-07-01">Jul 2021</time> –
+                <time datetime="2023-01-01">Jan 2023</time>
+              </div>
+              <div>Karachi, Pakistan</div>
+            </div>
+          </header>
+          <p>
+            Delivered scalable backend infrastructure and modernized legacy
+            systems for internal and client PoCs. Focused on cost savings,
+            system reliability, and secure cloud architecture.
+          </p>
+          <ul>
+            <li>
+              <p>
+                Led and deployed an ERP system using EC2, ALB, and Aurora
+                PostgreSQL, achieving 99.99% uptime
+              </p>
+            </li>
+            <li>
+              <p>
+                Migrated on-prem PostgreSQL to Aurora PostgreSQL using AWS DMS,
+                cutting infrastructure costs by 40% and operational overhead by
+                70%
+              </p>
+            </li>
+            <li>
+              <p>
+                Enforced security best practices with Secrets Manager, KMS
+                encryption, and Multi-AZ setup
+              </p>
+            </li>
+            <li>
+              <p>
+                Developed serverless PoCs using Lambda and ECS Fargate, reducing
+                idle compute costs by 60%
+              </p>
+            </li>
+
+            <li>
+              <p>
+                Modernized a legacy app using the Strangler Fig pattern,
+                accelerating release cycles by 40%
+              </p>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="education">
+      <h3>Education</h3>
+      <div class="stack">
+        <article>
+          <header>
+            <h4>
+              <a href="https://www.dsu.edu.pk/" target="_blank" rel="noreferrer"
+                >DHA SUFFA University</a
+              >
+            </h4>
+            <div class="meta">
+              <strong>Bachelor's of Computer Science</strong>
+            </div>
+          </header>
+        </article>
+      </div>
+    </section>
+    <section id="projects">
+      <h3>Projects</h3>
+      <div class="stack">
+        <article>
+          <header>
+            <h4>AI Retail Inventory System</h4>
+          </header>
+          <p>
+            Built a cloud-native AI and MLOps platform delivering personalized
+            inventory forecasting and recommendations.
+          </p>
+          <ul>
+            <li>
+              <p>
+                Ingested real-time streaming data with Kinesis Firehose,
+                transformed it via AWS Glue, and centralized storage in a
+                multi-AZ S3 data lake.
+              </p>
+            </li>
+            <li>
+              <p>
+                Automated nightly forecasting on EC2 using Amazon Bedrock,
+                triggered seamlessly by EventBridge.
+              </p>
+            </li>
+            <li>
+              <p>
+                Enhanced customer experience by integrating Amazon Personalize
+                for tailored recommendations.
+              </p>
+            </li>
+            <li>
+              <p>
+                Secured the platform through least-privilege IAM policies, KMS
+                encryption, VPC Endpoints, and VPC Flow Logs for monitoring.
+              </p>
+            </li>
+          </ul>
+        </article>
+        <article>
+          <header>
+            <h4>Intelli Doc</h4>
+          </header>
+          <p>
+            Built a serverless, MLOps-driven Retrieval-Augmented Generation
+            (RAG) pipeline delivering deep document insights.
+          </p>
+          <ul>
+            <li>
+              <p>
+                Extracted unstructured data using Amazon Textract, generated
+                embeddings with Amazon SageMaker, and enabled fast search with
+                Amazon OpenSearch.
+              </p>
+            </li>
+            <li>
+              <p>
+                Powered natural language queries with LLMs via Amazon Bedrock
+                for intuitive, AI-driven answers.
+              </p>
+            </li>
+            <li>
+              <p>
+                Orchestrated workflow with AWS Step Functions to ensure
+                scalability and reliability.
+              </p>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section id="skills">
+      <h3>Core Competencies</h3>
+      <div class="grid-list">
+        <div>
+          <ul class="tag-list">
+            <li>Microservices</li>
+            <li>Event-Driven Architectures</li>
+            <li>Cloud Security</li>
+            <li>Serverless</li>
+            <li>GenAI</li>
+            <li>Amazon Bedrock Agents</li>
+            <li>MLOps</li>
+            <li>Crew AI</li>
+            <li>Containers (ECS)</li>
+            <li>AWS Lambda</li>
+            <li>EC2</li>
+            <li>S3</li>
+            <li>Step Functions</li>
+            <li>RDS</li>
+            <li>Aurora</li>
+            <li>DynamoDB</li>
+            <li>CloudFront</li>
+            <li>KMS</li>
+            <li>IAM</li>
+            <li>Terraform</li>
+            <li>AWS CDK</li>
+            <li>CloudWatch</li>
+            <li>GuardDuty</li>
+            <li>AWS Well-Architected Framework</li>
+            <li>TypeScript</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section id="languages">
+      <h3>Languages</h3>
+      <div class="grid-list">
+        <div>
+          <h4>English</h4>
+          Fluent
+        </div>
+        <div>
+          <h4>Urdu</h4>
+          Native speaker
+        </div>
+      </div>
+    </section>
+    <section id="interests">
+      <h3>Interests</h3>
+      <div class="grid-list">
+        <div>
+          <ul class="tag-list">
+            <li>Book Reading</li>
+            <li>Cricket</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section id="references">
+      <h3>References</h3>
+      <div class="stack">
+        <blockquote>
+          <p>
+            I had the pleasure of having Mohsin at Syed Ventures (Now SYDT OÜ),
+            where he quickly became an indispensable part of our engineering
+            team. He brought a strong command of AWS infrastructure and backend
+            systems, but what stood out most was his ability to think
+            ahead—balancing performance, cost, and security without ever losing
+            sight of the business goals.<br /><br />Mohsin has that rare mix of
+            technical depth and clarity of thought. Whether it was automating
+            our cloud infrastructure, improving reliability, or demonstrating
+            strong architectural decisions, he consistently delivered results
+            that mattered. Any team would be lucky to have him.
+          </p>
+          <p>
+            <cite>Ateeq Syéd | Chief of Staff, Operations @ SYDT OÜ</cite>
+          </p>
+        </blockquote>
+        <blockquote>
+          <p>
+            It has been a pleasure working with Mohsin. The dude knows his
+            stuff!! Great attitude and he goes above and beyond. Would Highly
+            recommend for anyone looking for a cool cloud guy!
+          </p>
+          <p>
+            <cite>Jonathan Porter | Founder @ GameMyBiz</cite>
+          </p>
+        </blockquote>
+        <blockquote>
+          <p>
+            Great working with Mohsin. High quality work and a really good
+            person to work with, who has good work ethic and is extremely
+            reliable. We wish him all the best.
+          </p>
+          <p>
+            <cite>Adil Ali | Co-Founder @ Amanahfy LTD</cite>
+          </p>
+        </blockquote>
+      </div>
+    </section>
+  </body>
+</html>
